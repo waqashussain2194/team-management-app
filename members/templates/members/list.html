@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<div class="header">
+    <h2>Team Members</h2>
+    <a href="{% url 'add_member' %}" class="add-button">+</a>
+</div>
+<p>You have {{ members.count }} team members.</p>
+<div class="list-group">
+    {% for member in members %}
+    <a href="{% url 'edit_member' member.id %}" class="list-group-item-link">
+        <div class="list-group-item">
+            <div>
+                {{ member.first_name }} {{ member.last_name }}
+                {% if member.role == 'admin' %}
+                    (Admin)
+                {% endif %}
+            </div>
+            <div class="member-info">
+                {{ member.phone_number }}<br>
+                {{ member.email }}
+            </div>
+        </div>
+    </a>
+    {% endfor %}
+</div>
+{% endblock %}
