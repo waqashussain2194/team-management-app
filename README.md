@@ -40,6 +40,9 @@ source myenv/bin/activate
 
 ### Install Dependencies
 
+# Install necessary package
+pip install django-extensions
+
 # Install Django and the PostgreSQL adapter for Python
 pip install django
 pip install psycopg2-binary
