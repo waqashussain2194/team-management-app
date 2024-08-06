@@ -12,6 +12,9 @@ def add_member(request):
         if form.is_valid():
             form.save()
             return redirect('list_members')
+        else:
+            # Form is not valid, re-render the form with errors
+            return render(request, 'members/add.html', {'form': form})
     else:
         form = MemberForm()
     return render(request, 'members/add.html', {'form': form})
@@ -23,11 +26,16 @@ def edit_member(request, pk):
         if form.is_valid():
             form.save()
             return redirect('list_members')
+        else:
+            # Form is not valid, re-render the form with errors
+            return render(request, 'members/edit.html', {'form': form, 'member': member})
     else:
         form = MemberForm(instance=member)
     return render(request, 'members/edit.html', {'form': form, 'member': member})
 
 def delete_member(request, pk):
     member = get_object_or_404(Member, pk=pk)
-    member.delete()
-    return redirect('list_members')
+    if request.method == 'POST':
+        member.delete()
+        return redirect('list_members')
+    return render(request, 'members/confirm_delete.html', {'member': member})

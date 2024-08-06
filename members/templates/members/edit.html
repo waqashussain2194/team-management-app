@@ -7,18 +7,30 @@
     <div class="form-group">
         <label for="id_first_name">First Name:</label>
         <input type="text" id="id_first_name" name="first_name" value="{{ member.first_name }}" required>
+        {% if form.first_name.errors %}
+            <div class="alert alert-danger" style="color: red; font-size: small;">{{ form.first_name.errors }}</div>
+        {% endif %}
     </div>
     <div class="form-group">
         <label for="id_last_name">Last Name:</label>
         <input type="text" id="id_last_name" name="last_name" value="{{ member.last_name }}" required>
+        {% if form.last_name.errors %}
+            <div class="alert alert-danger" style="color: red; font-size: small;">{{ form.last_name.errors }}</div>
+        {% endif %}
     </div>
     <div class="form-group">
         <label for="id_phone_number">Phone Number:</label>
         <input type="tel" id="id_phone_number" name="phone_number" value="{{ member.phone_number }}" required>
+        {% if form.phone_number.errors %}
+            <div class="alert alert-danger" style="color: red; font-size: small;">{{ form.phone_number.errors }}</div>
+        {% endif %}
     </div>
     <div class="form-group">
         <label for="id_email">Email:</label>
-        <input type="email" id="id_email" name="email" value="{{ member.email }}" required>
+        <input type="email" id="id_email" name="email" value="{{ form.email.value|default_if_none:'' }}" required>
+        {% if form.email.errors %}
+            <div class="alert alert-danger" style="color: red; font-size: small;">{{ form.email.errors }}</div>
+        {% endif %}
     </div>
     <div class="form-group">
         <label>Role:</label>
@@ -30,4 +42,12 @@
     <button type="submit" class="btn btn-primary">Save</button>
     <a href="{% url 'delete_member' member.id %}" class="btn btn-danger">Delete</a>
 </form>
+
+<script>
+    document.getElementById('id_phone_number').addEventListener('input', function (e) {
+        var x = e.target.value.replace(/\D/g, '').match(/(\d{0,3})(\d{0,3})(\d{0,4})/);
+        e.target.value = !x[2] ? x[1] : '(' + x[1] + ') ' + x[2] + (x[3] ? '-' + x[3] : '');
+    });
+</script>
+
 {% endblock %}
